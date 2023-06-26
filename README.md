@@ -1,5 +1,5 @@
-# guida-laravel
- ## CREARE NUOVO PROGETTO
+# Guida-laravel
+##  CREARE NUOVO PROGETTO
 
 composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
 
@@ -11,62 +11,63 @@ composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_her
 6- ATTIVARE IL SERVER: terminata la pubblicazione su github, apire il terminale di vs code integrato o il terminale di sistema nella cartella progetto e lanciare il comando: php artisan serve
 7- in un altro terminale aperto sulla cartella del progetto, lanciare : composer require pacificdev/laravel_9_preset
 8 - poi lanciare il comando da terminale: php artisan preset:ui bootstrap
-9 - lanciare il comando da terminale: php artisan preset:ui bootstrap
-10 - lanciare il comando da terminale: npm install
-11 - lanciare il comando da terminale per attivaare i secondo server da mantenere attivo durante il lavoro: npm run dev
-12 - riavviare invece il server attivato con il comando: php artisan serve
-13 - inserire nel <head></head> del layout questo codice per poter intepretare bootstrap con vite: @vite('resources/js/app.js')
+9 - lanciare il comando da terminale: npm install
+10 - lanciare il comando da terminale per attivaare i secondo server da mantenere attivo durante il lavoro: npm run dev
+11 - riavviare invece il server attivato con il comando: php artisan serve
+12 - inserire nel <head></head> del layout questo codice per poter intepretare bootstrap con vite: @vite('resources/js/app.js')
 Il layout diventerà:
-    <head>
-        ....
-        @vite('resources/js/app.js')
-    </head>
+   
 
-- AVVIARE SERVER
+     <head>
+            ....
+            @vite('resources/js/app.js')
+        </head>
+
+### AVVIARE SERVER
 
 php artisan serve
 
-- CREARE CONTROLLER
+### CREARE CONTROLLER
 
 php artisan make:controller Nome controller
 
 php artisan make:controller Nome controller --model=nomeModel (per avere un cotroller resources) -----> da importare in web.php con Route::resource('/', NomeController::class );
 
-- CREARE MODEL
+## CREARE MODEL
 
 php artisan make: model nomeModel
 
-- COMANDO DA TERMINALE PER VEDERE TUTTE LE ROUTE
+## COMANDO DA TERMINALE PER VEDERE TUTTE LE ROUTE
 
 php artisan route: list
 
-- COMANDO PER MIGRARE LE TABELLE NELLE MIGRATIONS
+## COMANDO PER MIGRARE LE TABELLE NELLE MIGRATIONS
 
 php artisan migrate
 
-- COMANDO PER CREARE UNA MIGRATION
+##  COMANDO PER CREARE UNA MIGRATION
 
 php artisan make:migration create_nometabella_table
 
-- COMANDO PER ESEGUIRE UN SEEDER
+## COMANDO PER ESEGUIRE UN SEEDER
 
 php artisan db:seed --class=NomeTabellaSeeder
 
-- COMANDO PER FARE UN ROLLBACK AD UN BACH MINORE
+## COMANDO PER FARE UN ROLLBACK AD UN BACH MINORE
 
 php artisan migrate:rollback
 
-- COMANDO PER FARE ROLLBACK 0 E REFRESHARE LE TABELLE
+## COMANDO PER FARE ROLLBACK 0 E REFRESHARE LE TABELLE
 
 php artisan migrate:fresh
 
-- CONTROL P PER CERCARE I FILE 
+## CONTROL P PER CERCARE I FILE 
 
-- COMANDO PER LA CREAZIONE DEI MODEL, CONTROLLER, TABELLA E SEEDER
+## - COMANDO PER LA CREAZIONE DEI MODEL, CONTROLLER, TABELLA E SEEDER
 
 php artisan make:model Train -mcs (controller base) o -mrs (controller con tutte le crud)
 
-- COMANDO PER REFRESHARE LE TABELLE E RILANCIARE ANCHE I SEEEDER
+## - COMANDO PER REFRESHARE LE TABELLE E RILANCIARE ANCHE I SEEEDER
 
 php artisan migrate:refresh --seed
 
@@ -96,7 +97,7 @@ php artisan migrate:refresh --seed
 
 
 
-## divisione laravel frontend e backend
+## Divisione laravel frontend e backend
 
     - composer create-project laravel/laravel:^9.2 example-app
     - php require laravel/breeze --dev
@@ -126,7 +127,7 @@ php artisan migrate:refresh --seed
 
 ## Se vogliamo usare un campo unique in una colonna e poi abbinare la modifica con crud
      - creare il file Request tramite: php artisan make:request UpdatePostRequest
-     - Utilizzare il file al'interno del controller per update e store: public function update(UpdatePostRequest $request, Post $post)
+     - Utilizzare il file all'interno del controller per update e store: public function update(UpdatePostRequest $request, Post $post)
      - Nel file request aggiornare il campo false di authorized in true
      - inseirre nella funzione rule() la validazione per ogni campo colonna da controllare
      - Importare la classe Rule nel file request: use Illuminate\Validation\Rule;
@@ -147,7 +148,7 @@ php artisan migrate:refresh --seed
     - aggiornare migrations,models ($fillable) con la nuova colonna per le immagini path, e aggiornare la validazione 
     - aggiungee al form l'attributo enctype e il campo input type file con il name della colonna della migations
     - scrivere la logica per il controller nella update e store
-    - /* caricamento dell'immagine se presente */
+##### caricamento dell'immagine se presente 
         if( $request->hasFile('cover_image') ){
             
             //PROCEDIMENTO SOLO SE SIAMO NELLA UPDATE!!!!!
@@ -176,9 +177,12 @@ php artisan migrate:refresh --seed
 	- Creare il controller resources : php artisan make:controller Admin/TagController -r
 	- Aggiungere i campi della table nella create tags. 
 	- Fare una migrazione per far comparire la tabella tags nel database.
-	- Creare la cartella Pivot: php artisan make:migration create_post_tag_table (REGOLE da seguire nomi delle tabelle al singolare messi in ordine alfabetico collegate dall'underscore_ !!).
+	- Creare la cartella Pivot: php artisan make:migration create_post_tag_table 
+	**(REGOLE da seguire nomi delle tabelle al singolare messi in ordine alfabetico collegate dall'underscore_ !!).**
 	- Fare la migrate della tabella Pivot.
+	
 	- La tabella pivot dev'essere priva per convenzione delle colonne id e timestamps quindi cancellarle.
+	
 	- Creare le due colonne dei due id nella table pivot:
 
 		$table->unsignedBigInteger('post_id')
@@ -190,10 +194,10 @@ php artisan migrate:refresh --seed
 		$table->primary(['post_id','tag_id'])
 
 	- Modificare il model della tabella Tags aggiungendo la protected table, la protected fillable e la public function posts(){
-return $this->belongsToMany(Post::class);
+			return $this->belongsToMany(Post::class);
 
 	- Modificare il model della table Posts aggiungendo la public function tags(){
-return $this->belongsToMany(tag::class);
+			return $this->belongsToMany(tag::class);
 
 	- Riempire il seeder della table Tags per popolarla.
 
@@ -201,14 +205,13 @@ return $this->belongsToMany(tag::class);
 
 	- Per mostrare le informazioni della table Tags bisogna fare un ciclo con una condizione:
 
-@if( $post->tags )
-	@foreach ( $post->tags as $elem )
-		<div> {{ $elem->name }} </div>
-	@endforeach
-@endif
+    @if( $post->tags )
+    	@foreach ( $post->tags as $elem )
+    		<div> {{ $elem->name }} </div>
+    	@endforeach
+    @endif
 
 
-	
 	- Per poter ciclare i tag in un div checkbox andare nella create del controller posts e scrivere $tag = Tag::all() e passarlo nel compact della view.
 
 	- Nella validazione mettere al campo tags l'exist.
@@ -217,36 +220,30 @@ return $this->belongsToMany(tag::class);
 
 	- Nella create bisogna creare una condizione dopo la creazione del record
 
-if( $request->has('tags') ){
-	$singolo_post->tags()->attach($request->tags);
-
+    if( $request->has('tags') ){
+    	$singolo_post->tags()->attach($request->tags);
 
 	- Nella edit scrivere $tag = Tag::all() e passarlo nel compact della view.
 
 	- Nel form edit copiare e incollare il div della checkbox messo nella create e creare il ternario per determinare se la singola check é giá spuntata o checked
 
-@if ( $errors->any() )
+	@if ( $errors->any() )
 
 	{{ in_array( $elem->id, old( 'tags', [] ) ) ? 'checked' : '' }}
 
-@else
+	@else
 
 	{{ ( $post->tags->contains($elem) ) ? 'checked' : '' }}
-
-
 
 	- Aggiornare la validazione dell'edit
 
 	- Nell'update scrivere l'altra condizione dopo l'update del record
 
-if( $request->has('tags') ){
+	if( $request->has('tags') ){
+	
 	$singolo_post->tags()->sync($request->tags);
 
 	- Nella destroy abbinare un array vuoto nella pivot alla distruzione del post
 
-$post->tags()->sync( [] );
-	
-	
-
- 
+	$post->tags()->sync( [] );
 
