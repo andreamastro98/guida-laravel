@@ -247,3 +247,32 @@ php artisan migrate:refresh --seed
 
 	$post->tags()->sync( [] );
 
+## INTEGRAZIONE VUE CON LARAVEL
+
+    - Scrivere in api.php una route:get('/posts',[PostController::class, 'index']);
+
+
+    - Creare un Controller base con una
+    public function index(){
+	    $posts = Post::all();
+
+    //oppure per avere anche le relazioni
+
+	    $posts = Post::with('category','tags')->get();
+
+    //oppure per avere tot(3) elementi per pagina 
+
+	    $posts = Post::with('category','tags')->paginate(3);
+
+	    return responde()->json([
+	    	'success' => true,
+	    	'posts' => $posts
+	    ]);
+    }
+
+    - Clonare un template vue con tutto integrato nell'area di lavoro di vs code
+    - Aprirci un terminale e fare 'npm i' per installare i node modules e 'npm run dev'. Avremo cosí 3 terminali di laravel e 1 di vite con tutti i server funzionanti.
+
+    - Tramite struttura vue fare una chiamata axios al link del file api.
+    - Ciclare l'array ottenuto dalla chiamata axios per mostrarlo in pagina.
+
