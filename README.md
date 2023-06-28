@@ -264,7 +264,7 @@ php artisan migrate:refresh --seed
 
 	    $posts = Post::with('category','tags')->paginate(3);
 
-	    return responde()->json([
+	    return response()->json([
 	    	'success' => true,
 	    	'posts' => $posts
 	    ]);
