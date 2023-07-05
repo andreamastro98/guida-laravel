@@ -1,4 +1,4 @@
-# Guida-laravel
+# GUIDA LARAVEL BASATA SU UNA LOCALHOST BACKEND CHE PERMETTE LA CREAZIONE DI POST CON CATEGORIE E TAG ANNESSI
 ##  CREARE NUOVO PROGETTO
 
     - composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
@@ -68,6 +68,8 @@
     php artisan make:model Train -mcs (controller base) o -mrs (controller con tutte le crud)
 
 ## COMANDO PER REFRESHARE LE TABELLE E RILANCIARE ANCHE I SEEEDER
+
+    - Aggiungere 
 
     php artisan migrate:refresh --seed
 
@@ -254,7 +256,7 @@
 
 
 
-    
+
 
 ## INTEGRAZIONE VUE CON LARAVEL
 
