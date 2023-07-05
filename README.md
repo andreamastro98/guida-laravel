@@ -276,3 +276,221 @@ php artisan migrate:refresh --seed
     - Tramite struttura vue fare una chiamata axios al link del file api.
     - Ciclare l'array ottenuto dalla chiamata axios per mostrarlo in pagina.
 
+## VUE ROUTER
+
+    - npm install vue-router@4
+    - nella cartella src inseriamo il file router.js
+    - Scrivere nel file router.js:
+    import { createRouter, createWebHistory } from 'vue-router';
+    import AppHome from './pages/AppHome.vue';
+    import PostList from './pages/PostList.vue';
+    const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+    {
+    path: '/',
+    name: 'home',
+    component: AppHome
+    },
+    {
+    path: '/blog',
+    name: 'posts',
+    component: PostList
+    },
+    ]
+    });
+    export { router };
+
+    - Nel file Main.js bisogna importare il router:
+    import { router } from './router';
+
+
+## SHOW LATO API
+
+    - in api.php scrivere la nuova rotta show 
+    	Route::get('/posts/{slug}',[PostController::class, 'show']);
+    - nel controller scrivere una nuova public function show($slug){
+    	$post = Post::with( 'category','tags' )-> where('slug', $slug )->first();
+
+    if ($post){
+    	return response()->json([
+    		'success' => true,
+    		'post' => $post
+    	]);
+    } else {
+    	return response()->json([
+    		'success' => false,
+    		'error' => 'non ci sono posts'
+    		]);
+    	}
+    }
+
+    - Nella pages SinglePost scrivere 
+    axios.get(`${this.apiUrl}/api/posts/${this.$route.params.slug}`).then((response) => {
+    if (response.data.success) {
+    this.post = response.data.post;
+    } else {
+    // redirect alla pagina 404
+    this.$router.push({ name: 'not-found' })
+    }
+    });
+
+
+
+## FILTRARE PER CATEGORY I POST
+
+    - Creare un controller nella cartella api php artisan make:controller Api/CategoryController
+
+    - Determinare la rotta del controller creato Route::get('/categories', [CategoryController::class,'index']);
+
+    -scrivere nel controller una public function index(){
+    	$categories = Category::all();
+
+    	return response()->json(
+    		[
+    			'success' => true,
+    			'categories' => $categories
+    		]
+    	);
+    }
+
+    - Aggiungere un method con l'altra chiamata axios:
+    getCategories(){
+    	axios.get(`${this.baseUrl}/api/categories`).then(res => {
+    		this.categories = res.data.categories
+    	})
+    }
+
+    - Scrivere la selected che cicla le categories con il v-model abbinato e l'@change con la funzione della chiamata axios principale e il value alle option.
+
+    - Andare a modificare l'index del PostController aggiungendoci come parametri (Request $request) con una condizione
+
+    if ($request->has('type_id')) {
+    
+    		$projects = Project::with('type', 'technologies')->where('type_id', $request->type_id)->paginate(3);
+
+    	} else {
+
+    		$projects = Project::with('type', 'technologies')->paginate(3);
+
+    	}
+
+    - Nel methods della chiamata axios principale del post scrivere la condizione che aggiunge il type_id al parametro
+
+    const params = {
+            page: projectApiPage
+          }
+
+          if(this.selectedType !=='all'){
+            params.type_id = this.selectedType
+          }
+
+## FILTRARE PER TAGS I POST
+
+    - php artisan make:controller Api/TagController --model=Admin/Tag
+    - $tags = Tag::all();
+    - return response()->json(
+    		[
+    			'success' => true,
+    			'tags' => $tags
+    		]
+    	);
+
+    - In api.php aggiungere il nuovo controller
+
+    - aggiungere in FrontEnd: una variabile tags settata a null e una selectedTags:[]
+
+    - Realizzare nuovo metodo GetTags() con la nuova chiamata axios che pusha l'informazione in tags.
+
+    - Aggiungere lato html una checkbox ciclata per tanti elementi quanti quelli recuperati dalla chiamata api. con :value=elem.id e v-model=selectedTags
+
+    - Scrivere nella watch: {
+    	selectedTags:{
+    		handler: 'getPosts',
+    		deep: true	
+    	}
+    },
+
+    - Aggiungere nella funzione getPosts la condizione 
+    	if ( this.selectedTags.lenght > 0 ){
+    	params.tags_ids = this.selectedTags.join(',')
+    }
+
+    - Tornare al PostController escrivere una variabille $query = Post::with(['category','tags']);
+
+    if( $request->has( 'category_id' ) ){
+    	$query->where( 'category_id', $request->category_id );
+    }
+
+    if( $request->has( 'tags_ids' ) ){
+    	$tagIds = explode( ',', $request->tags_ids );
+    	$query->whereHas('tags',function($query) use ($tagIds)
+    	{
+    		$query->whereIn('id',$tagIds);
+    	});
+    }
+
+    $post = $query->paginate(3);
+
+    return response()->json([
+    	'success' => true,
+    	'posts' => $posts
+    ]);
+
+## MAIL
+
+    - php artisan make:model Admin/Lead -m
+    - impostiamo nel model la protected table 'leads' e il fillable
+    - Aggiungere le colonne name, email e message alla migration della table.
+    - php artisan make:mail NewContact
+    - in NewContact.php imposto una public $lead;
+    - Nel costruttore impostiamo $this->lead = $_lead
+    - Nell'envelope impostiamo:
+    	replyTo: $this->lead->address,
+    	subject:'Nuovo Contatto'
+    - nel content, nella view: 'emails.new-contact-mail',
+    - Nella cartella view dobbiamo creare la cartella Emails e generare dentro la page new-contact-mail.blade.php
+    - scrivere l'html tipo di una mail ricevuta con {{ $lead->name }}, {{ $lead->email }}, {{ $lead->message }}
+    - - php artisan make:controller Api/LeadController --model=Admin/Lead
+    - importare il model Lead nel controller appna creato
+    - impostare una public function store(Request $request){
+    	$data = $request->all();
+    
+    	$new_lead = new Lead($data);
+    	$new_lead->fill($data);
+    	$new_lead->create();
+
+    	//oppure
+
+    	$new_lead = Lead::create($data);
+
+    	Mail::to('no-reply@boolpress.it')->send(new NewContact( $new_lead ) );
+
+    	return response()->json(
+    		[
+    			'success' => true
+    		]
+    	)	
+    }
+
+    - aggiungere in api.php la rotta del lead controller
+    - copiare nel .env le credenziali di MailTrap
+    - Nei data della pagina vue del form o del component dobbiamo passare come dati il name:'', email:'', message:'' e baseUrl
+    - <form @submit.prevent="sendForm()">
+    - Scrivere il form con i vari campi
+    - SendForm(){
+    	const data = {
+    		name:this.name,
+    		email:this.email,
+    		message:this.message,
+    	}
+
+    	axios.post(`${this.baseUrl}/api/contacts`, data ).then( res => 	{
+    		this.success = res.data.success
+    		if ( this.success ){
+    			this.name = '';
+    			this.email = '';
+    			this.message = '';
+    		}
+    	} )
+    }
