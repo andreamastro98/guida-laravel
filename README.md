@@ -1,21 +1,21 @@
 # Guida-laravel
 ##  CREARE NUOVO PROGETTO
 
-composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
+    - composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
 
-1- Creare la carttella tramite comando da terminale: composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
-2- aprire la cartella creata e basta su vs code
-3- cliccare nella sidebar di sinistra su source controll
-4- cliccare sul bottone blu per "pubblica su github"
-5- scegliere pubblica repo con visibilità "pubblica"
-6- ATTIVARE IL SERVER: terminata la pubblicazione su github, apire il terminale di vs code integrato o il terminale di sistema nella cartella progetto e lanciare il comando: php artisan serve
-7- in un altro terminale aperto sulla cartella del progetto, lanciare : composer require pacificdev/laravel_9_preset
-8 - poi lanciare il comando da terminale: php artisan preset:ui bootstrap
-9 - lanciare il comando da terminale: npm install
-10 - lanciare il comando da terminale per attivaare i secondo server da mantenere attivo durante il lavoro: npm run dev
-11 - riavviare invece il server attivato con il comando: php artisan serve
-12 - inserire nel <head></head> del layout questo codice per poter intepretare bootstrap con vite: @vite('resources/js/app.js')
-Il layout diventerà:
+    - Creare la carttella tramite comando da terminale: composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
+    - aprire la cartella creata e basta su vs code
+    - cliccare nella sidebar di sinistra su source controll
+    - cliccare sul bottone blu per "pubblica su github"
+    - scegliere pubblica repo con visibilità "pubblica"
+    - ATTIVARE IL SERVER: terminata la pubblicazione su github, apire il terminale di vs code integrato o il terminale di sistema nella cartella progetto e lanciare il comando: php artisan serve
+    - in un altro terminale aperto sulla cartella del progetto, lanciare : composer require pacificdev/laravel_9_preset
+    - poi lanciare il comando da terminale: php artisan preset:ui bootstrap
+    - lanciare il comando da terminale: npm install
+    - lanciare il comando da terminale per attivare i secondo server da mantenere attivo durante il lavoro: npm run dev
+    - riavviare invece il server attivato con il comando: php artisan serve
+    - inserire nel <head></head> del layout questo codice per poter intepretare bootstrap con vite: @vite('resources/js/app.js')
+    Il layout diventerà:
    
 
      <head>
@@ -25,51 +25,51 @@ Il layout diventerà:
 
 ### AVVIARE SERVER
 
-php artisan serve
+    php artisan serve
 
 ### CREARE CONTROLLER
 
-php artisan make:controller Nome controller
+    php artisan make:controller Nome controller
 
-php artisan make:controller Nome controller --model=nomeModel (per avere un cotroller resources) -----> da importare in web.php con Route::resource('/', NomeController::class );
+    php artisan make:controller Nome controller --model=nomeModel (per avere un cotroller resources) -----> da importare in web.php con Route::resource('/', NomeController::class );
 
 ## CREARE MODEL
 
-php artisan make: model nomeModel
+    php artisan make: model nomeModel
 
 ## COMANDO DA TERMINALE PER VEDERE TUTTE LE ROUTE
 
-php artisan route: list
+    php artisan route: list
 
 ## COMANDO PER MIGRARE LE TABELLE NELLE MIGRATIONS
 
-php artisan migrate
+    php artisan migrate
 
 ##  COMANDO PER CREARE UNA MIGRATION
 
-php artisan make:migration create_nometabella_table
+    php artisan make:migration create_nometabella_table
 
 ## COMANDO PER ESEGUIRE UN SEEDER
 
-php artisan db:seed --class=NomeTabellaSeeder
+    php artisan db:seed --class=NomeTabellaSeeder
 
 ## COMANDO PER FARE UN ROLLBACK AD UN BACH MINORE
 
-php artisan migrate:rollback
+    php artisan migrate:rollback
 
 ## COMANDO PER FARE ROLLBACK 0 E REFRESHARE LE TABELLE
 
-php artisan migrate:fresh
+    php artisan migrate:fresh
 
 ## CONTROL P PER CERCARE I FILE 
 
-## - COMANDO PER LA CREAZIONE DEI MODEL, CONTROLLER, TABELLA E SEEDER
+## COMANDO PER LA CREAZIONE DEI MODEL, CONTROLLER, TABELLA E SEEDER
 
-php artisan make:model Train -mcs (controller base) o -mrs (controller con tutte le crud)
+    php artisan make:model Train -mcs (controller base) o -mrs (controller con tutte le crud)
 
-## - COMANDO PER REFRESHARE LE TABELLE E RILANCIARE ANCHE I SEEEDER
+## COMANDO PER REFRESHARE LE TABELLE E RILANCIARE ANCHE I SEEEDER
 
-php artisan migrate:refresh --seed
+    php artisan migrate:refresh --seed
 
 
 
@@ -78,18 +78,18 @@ php artisan migrate:refresh --seed
 
 ## CLONARE REPO E INSTALLARE TUTTI I FILE MANCANTI
 
-1. clonare la repo in locale
-2. `composer install`
-3. `npm install`
-4. `cp .env.example .env` (fare una **copia** del file .env)
-5. `php artisan key:generate`
-6. creare un nuovo database con phpMyAdmin
-7. inserire le credenziali del database nel file .env
-8. se già avviato, riavviare artisan serve
-9. `php artisan migrate`
-10. `php artisan db:seed` (se ci sono seeder)
+    - clonare la repo in locale
+    - `composer install`
+    - `npm install`
+    - `cp .env.example .env` (fare una **copia** del file .env)
+    - `php artisan key:generate`
+    - creare un nuovo database con phpMyAdmin
+    - inserire le credenziali del database nel file .env
+    - se già avviato, riavviare artisan serve
+    - `php artisan migrate`
+    -  `php artisan db:seed` (se ci sono seeder)
 
-11.git clean -d -n nel caso ci siano errori di pull
+    - git clean -d -n nel caso ci siano errori di pull
 
 
 
@@ -117,6 +117,7 @@ php artisan migrate:refresh --seed
         - Modificare i link associati ai bottoni preesistenti di laravel breeze 
     - Tutte le rotte devono avere anche il name() che inizia con admin.
         - Aggiungere la funzione ->name('admin.') Dopo il ->prefix('admin')
+
 
 ## Se vogliamo usare lo slug
     - Modificare le rotte aggiungendo ->parameters([ ....Dato parametro diverso da Id...... ])
@@ -148,7 +149,11 @@ php artisan migrate:refresh --seed
     - aggiornare migrations,models ($fillable) con la nuova colonna per le immagini path, e aggiornare la validazione 
     - aggiungee al form l'attributo enctype e il campo input type file con il name della colonna della migations
     - scrivere la logica per il controller nella update e store
-##### caricamento dell'immagine se presente 
+
+
+
+
+### caricamento dell'immagine se presente 
         if( $request->hasFile('cover_image') ){
             
             //PROCEDIMENTO SOLO SE SIAMO NELLA UPDATE!!!!!
@@ -247,6 +252,10 @@ php artisan migrate:refresh --seed
 
 	$post->tags()->sync( [] );
 
+
+
+    
+
 ## INTEGRAZIONE VUE CON LARAVEL
 
     - Scrivere in api.php una route:get('/posts',[PostController::class, 'index']);
@@ -276,6 +285,9 @@ php artisan migrate:refresh --seed
     - Tramite struttura vue fare una chiamata axios al link del file api.
     - Ciclare l'array ottenuto dalla chiamata axios per mostrarlo in pagina.
 
+
+
+
 ## VUE ROUTER
 
     - npm install vue-router@4
@@ -303,6 +315,8 @@ php artisan migrate:refresh --seed
 
     - Nel file Main.js bisogna importare il router:
     import { router } from './router';
+
+
 
 
 ## SHOW LATO API
@@ -334,6 +348,8 @@ php artisan migrate:refresh --seed
     this.$router.push({ name: 'not-found' })
     }
     });
+
+
 
 
 
@@ -384,6 +400,10 @@ php artisan migrate:refresh --seed
           if(this.selectedType !=='all'){
             params.type_id = this.selectedType
           }
+
+
+
+
 
 ## FILTRARE PER TAGS I POST
 
@@ -436,6 +456,10 @@ php artisan migrate:refresh --seed
     	'success' => true,
     	'posts' => $posts
     ]);
+
+
+
+
 
 ## MAIL
 
